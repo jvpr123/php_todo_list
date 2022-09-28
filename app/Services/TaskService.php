@@ -11,7 +11,7 @@ class TaskService
 {
     public function findAllTasks()
     {
-        return Task::all();
+        return Task::paginate(10);
     }
 
     public function createTask($data)

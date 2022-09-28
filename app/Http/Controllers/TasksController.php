@@ -25,7 +25,10 @@ class TasksController extends Controller
         try {
             $tasks = $this->taskService->findAllTasks();
 
-            return response()->json(["tasks" => $tasks]);
+            return response()->json([
+                "currentPage" => $tasks->currentPage(),
+                "tasks" => $tasks->items(),
+            ]);
         } catch (\Exception $error) {
             return ErrorHandler::handle($error);
         }
