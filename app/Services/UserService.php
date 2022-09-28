@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -18,6 +19,8 @@ class UserService
     {
         $rules = $this->getCreateValidationRule();
         $validated = $this->validate($data, $rules);
+
+        $validated["password"] = Hash::make($validated["password"]);
 
         return User::create($validated);
     }
