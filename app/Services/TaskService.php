@@ -9,22 +9,23 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class TaskService
 {
-    public function findAllTasks()
+    public function findAllTasks($userId)
     {
-        return Task::paginate(10);
+        return Task::where("user_id", $userId)->paginate(10);
     }
 
-    public function createTask($data)
+    public function createTask($data, $userId)
     {
         $rules = $this->getCreateValidationRule();
         $validated = $this->validate($data, $rules);
+        $validated["user_id"] = $userId;
 
         return Task::create($validated);
     }
 
-    public function findTaskById($id)
+    public function findTaskById($id, $userId)
     {
-        $task = Task::find($id);
+        $task = Task::where(["id" => $id, "user_id" => $userId])->first();
 
         if (!$task)
             throw new NotFoundHttpException("Error: task not found");
@@ -32,19 +33,27 @@ class TaskService
         return $task;
     }
 
-    public function updateTask($data, $id)
+    public function updateTask($data, $id, $userId)
     {
         $rules = $this->getUpdateValidationRule();
         $validated = $this->validate($data, $rules);
 
-        Task::where("id", $id)->update($validated);
+        $taskToUpdate = Task::where([
+            "id" => $id,
+            "user_id" => $userId
+        ])->first();
 
-        return $this->findTaskById($id);
+        if (!$taskToUpdate)
+            throw new NotFoundHttpException("Could not update: task not found");
+
+        $taskToUpdate->update($validated);
+
+        return Task::where("id", $id)->first();
     }
 
-    public function deleteTask($id)
+    public function deleteTask($id, $userId)
     {
-        $taskToDelete = Task::find($id);
+        $taskToDelete = Task::where(["id" => $id, "user_id" => $userId])->first();
 
         if (!$taskToDelete)
             throw new NotFoundHttpException("Failed to delete: task not found");
@@ -60,7 +69,6 @@ class TaskService
                 "description" => ["required", "string", "max:255"],
                 "deadline" => ["required", "date", "after:now"],
                 "done" => ["boolean"],
-                "user_id" => ["required", "integer", "exists:users,id"],
                 "category_id" => ["required", "integer", "exists:categories,id"],
             ];
     }

@@ -20,10 +20,11 @@ class TasksController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         try {
-            $tasks = $this->taskService->findAllTasks();
+            $user = $request->user();
+            $tasks = $this->taskService->findAllTasks($user->id);
 
             return response()->json([
                 "currentPage" => $tasks->currentPage(),
@@ -53,7 +54,8 @@ class TasksController extends Controller
     public function store(Request $request)
     {
         try {
-            $createdTask = $this->taskService->createTask($request->all());
+            $user = $request->user();
+            $createdTask = $this->taskService->createTask($request->all(), $user->id);
 
             return response()->json([
                 "message" => "Task created",
@@ -70,10 +72,11 @@ class TasksController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
         try {
-            $task = $this->taskService->findTaskById($id);
+            $user = $request->user();
+            $task = $this->taskService->findTaskById($id, $user->id);
 
             return response()->json(["task" => $task]);
         } catch (\Exception $error) {
@@ -102,7 +105,8 @@ class TasksController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            $updatedTask = $this->taskService->updateTask($request->all(), $id);
+            $user = $request->user();
+            $updatedTask = $this->taskService->updateTask($request->all(), $id, $user->id);
 
             return response()->json([
                 "message" => "Task updated successfully",
@@ -119,10 +123,11 @@ class TasksController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         try {
-            $isDeleted = $this->taskService->deleteTask($id);
+            $user = $request->user();
+            $isDeleted = $this->taskService->deleteTask($id, $user->id);
 
             return $isDeleted
                 ? response()->json(["message" => "Task successfully deleted"])
