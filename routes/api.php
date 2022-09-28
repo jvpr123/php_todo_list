@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TasksController;
 use App\Http\Controllers\UsersController;
 
@@ -12,5 +13,15 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::get("/ping", fn () => ["message" => "Welcome"]);
 
-Route::resource("users", UsersController::class);
-Route::resource("tasks", TasksController::class);
+// Authentication routes
+Route::prefix("auth")->group(function () {
+    Route::post("login", [AuthController::class, "login"]);
+    Route::post("logout", [AuthController::class, "logout"]);
+});
+
+// Users routes
+Route::middleware("auth:sanctum")->resource("users", UsersController::class, ["except" => ["store"]]);
+Route::post("/users", [UsersController::class, "store"]);
+
+// Tasks routes
+Route::middleware("auth:sanctum")->resource("tasks", TasksController::class);
