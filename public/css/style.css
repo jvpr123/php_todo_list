@@ -1,0 +1,148 @@
+:root {
+    --bg-white: #f6f5ff;
+    --bg-light: #c1bcec;
+    --txt-dark: #0a0040;
+    --primary: #6143ff;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Rubik', sans-serif;
+}
+
+body {
+    height: 100vh;
+    width: 100vw;
+    background: var(--bg-white);
+}
+
+body .container {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+}
+
+body .container .side-bar {
+    width: 100px;
+    background: var(--primary);
+}
+
+body .container .content nav {
+    height: 100px;
+    width: calc(100vw - 100px);
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 20px;
+    background: var(--bg-light);
+}
+
+body .container .content nav .btn {
+    padding: 20px 30px;
+    border-radius: 10px;
+    text-decoration: none;
+}
+
+body .container .content nav .btn-primary {
+    background-color: var(--primary);
+    color: white;
+}
+
+body .container .content main {
+    display: flex;
+    padding: 20px;
+}
+
+body .container .content main .graph {
+    width: 33%;
+}
+
+body .container .content main .graph .graph-header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+body .container .content main .graph .graph-header h2 {
+    display: inline-block;
+}
+
+body .container .content main .graph .graph-header-subtitle {
+    margin-top: 10px;
+}
+
+body .container .content main .graph .graph-placeholder {
+    background-color: #acc;
+    width: 300px;
+    height: 300px;
+    margin: 20px auto;
+}
+
+body .container .content main .graph .graph-tasks-left {
+    text-align: center;
+}
+
+body .container .content main .list {
+    padding-left: 20px;
+    flex: 1;
+}
+
+body .container .content main .list .list-header {
+    display: flex;
+}
+
+body .container .content main .list .list-header .list-header-select {}
+
+body .container .content main .list .tasks-list {
+    display: flex;
+    flex-direction:column;
+    width: 100%;
+    margin-top: 20px;
+}
+
+body .container .content main .list .task {
+    display: flex;
+    flex-direction:row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 30px 15px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid var(--bg-light);
+}
+
+body .container .content main .list .task:hover {
+    background-color: var(--bg-light);
+}
+
+body .container .content main .list .tasks-list .task .title {
+    flex: 1;
+    display: flex;
+    align-items: center;
+}
+
+body .container .content main .list .tasks-list .task .title span {
+    margin-left: 20px;
+}
+
+body .container .content main .list .tasks-list .task .priority {
+    flex: 1;    
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+body .container .content main .list .tasks-list .task .priority .sphere {
+    width: 22px;
+    height: 22px;
+    background-color: red;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+body .container .content main .list .tasks-list .task .actions {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+}
