@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Errors\ErrorHandler;
 use App\Services\TaskService;
 use Illuminate\Http\Request;
-use Symfony\Component\CssSelector\Exception\InternalErrorException;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class TasksController extends Controller
 {
@@ -100,7 +98,16 @@ class TasksController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        try {
+            $updatedTask = $this->taskService->updateTask($request->all(), $id);
+
+            return response()->json([
+                "message" => "Task updated successfully",
+                "task" => $updatedTask
+            ]);
+        } catch (\Exception $error) {
+            return ErrorHandler::handle($error);
+        }
     }
 
     /**
